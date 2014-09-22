@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:javaee="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+	<display-name>frontend</display-name>
+<!-- 	<javaee:welcome-file-list> -->
+<!-- 		<javaee:welcome-file>index.html</javaee:welcome-file> -->
+<!-- 		<javaee:welcome-file>index.htm</javaee:welcome-file> -->
+<!-- 		<javaee:welcome-file>index.jsp</javaee:welcome-file> -->
+<!-- 		<javaee:welcome-file>default.html</javaee:welcome-file> -->
+<!-- 		<javaee:welcome-file>default.htm</javaee:welcome-file> -->
+<!-- 		<javaee:welcome-file>default.jsp</javaee:welcome-file> -->
+<!-- 	</javaee:welcome-file-list> -->
+</web-app>

@@ -1,0 +1,95 @@
+{
+	width: '100%', 
+	height: '100%', 
+	members: [     
+    	isc.ListGrid.create({
+		    ID: 'countryList',
+		    width:500, 
+		    height:224, 
+		    alternateRecordStyles:true,
+		    emptyCellValue: '--',
+		    dataSource: 'DSTest1',
+		    useAllDataSourceFields:true,
+		    autoFetchData:true
+		}),
+		
+        isc.DynamicForm.create({
+	   		ID: 'boundForm',
+			colWidths: [100, 200],
+		    dataSource: 'DSTest1',
+		    useAllDataSourceFields: true,
+		    autoFetchData:true,
+		    fields: [
+		        {type:'header', defaultValue:'Registration Form'},
+		        {name: 'password'},
+		        {name: 'password2', title: 'Password Again', type: 'password', required: true, 
+		         length: 20, validators: [{
+		             type: 'matchesField',
+		             otherField: 'password',
+		             errorMessage: 'Passwords do not match'
+		         }]
+		        },
+		        {name: 'acceptTerms', title: 'I accept the terms of use.', type: 'checkbox', width:150,
+		         defaultValue:false,
+		         validators:[{
+		            type:'custom',
+		            condition:'return value == true',
+		            errorMessage:'You must accept the terms of use to continue'
+		         }]
+		        }, 
+		        {name: 'fetchBtn', title: 'fetchBtn', type: 'button', 
+		        	click:function () {
+			        	boundForm.fetchData();
+			        }
+			    },       
+		        {name: 'addBtn', title: 'addBtn', type: 'button', 
+		        	click:function () {
+			        	boundForm.addData(
+			            {
+			                firstName: 'US',
+			                lastName:'Edited Value',
+			                password:'Edited Value'             
+			            });
+			        }
+			    },
+		        {name: 'updateBtn', title: 'updateBtn', type: 'button', 
+		        	click: function () {
+			        	boundForm.updateData({
+			                firstName: 'US',
+			                lastName:'Edited Value',
+			                password:'Edited Value'
+			            },
+			            function (dsResponse, data, dsRequest) {
+                            myForm.setValues(data);
+                        });
+		        	}
+			    },
+		        {name: 'deleteBtn', title: 'deleteBtn', type: 'button', 
+		        	click: function () {
+			        	boundForm.removeData({ firstName: 'US' });
+		        	}
+		       	},
+		       	{name: 'saveDataBtn', title: 'saveDataBtn', type: 'button', 
+		        	click:function () {
+			        	boundForm.saveData();
+			        }
+			    },
+			    {name: 'switchDS', title: 'switchDS', type: 'button',
+                    click:function () {
+                        if(countryList.dataSource.ID === 'DSTest1'){
+                            countryList.setDataSource(DSTest2);
+                        }else {
+                            countryList.setDataSource(DSTest1);
+                        }
+                        countryList.fetchData();
+                    }
+                },
+                {name: 'selectRecord', title: 'selectRecord', type: 'button',
+                    click:function () {
+                        boundForm.fetchData();
+                    }
+                }
+		    ]    
+		})		
+	]
+}

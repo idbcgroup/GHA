@@ -1,0 +1,17 @@
+{
+	ID: "DSTest2",
+	dataFormat:"json",	
+	operationBindings : [		
+    	{operationType:"fetch", dataProtocol:"postMessage"},
+    	{operationType:"add", dataProtocol:"postMessage"},
+    	{operationType:"remove", dataProtocol:"postMessage"},
+    	{operationType:"update", dataProtocol:"postMessage"} 
+   	],
+	fields: [
+		{name: "col1", title: "TextItem1", type: "text", length: 50, primaryKey: true},
+	    {name: "col2", title: "TextItem2", type: "text", length: 50},
+	    {name: "col3", title: "SelectItem", type: "select"},
+	    {name: "col4", title: "Password", type: "password",  length: 20}
+	],		
+	dataURL: "services/ess/servicePrueba"
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="js/jquery/jquery_2.1.1.js"></script>
+<script src="js/plugins/jquery.cookie.js"></script>
+<script src="js/core/util/utilities.js"></script>
+<title>Insert title here</title>
+</head>
+<body>
+	<script>
+        window.onload = function () {
+            var domain = 'http://localhost:8080/frontend/init.html?';
+            
+            var ghaBpiJson = 'ghabpi=' + JSON.stringify({
+                institution: {
+                    code: 200,
+                    name: "Clinica Amado"
+                },
+                instalationType: "GHA_RED"
+            });
+            
+            var ghaTermJson = 'ghaterm=' + JSON.stringify({
+                terminalName: "Terminal 1",
+                terminalType: "MOVIL",
+                workingArea: {
+                    code: 200,
+                    name: "Enfermeria"
+                }
+            });
+
+            location.replace(domain + ghaBpiJson +'&'+ ghaTermJson);
+        };
+    </script>	
+</body>
+</html>

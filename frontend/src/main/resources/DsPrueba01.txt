@@ -1,0 +1,41 @@
+{
+	ID: "DSTest1",
+	dataFormat:"json",	
+	operationBindings : [		
+    	{operationType:"fetch", dataProtocol:"clientCustom"},
+    	{operationType:"add", dataProtocol:"postMessage"},
+    	{operationType:"remove", dataProtocol:"postMessage"},
+    	{operationType:"update", dataProtocol:"postMessage"} 
+   	],
+   	transformRequest: function(dsRequest){
+   	    var ghaParams = {sessionId: 1, token: "XXX1"}
+   	    ghaParams = isc.addProperties(ghaParams, {data: dsRequest.data});
+   	    var requestData = JSON.stringify(ghaParams);
+   	    console.log(requestData);
+
+   	    $.ajax({
+   	        type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "services/ess/servicePruebaFetch",
+            data: requestData,
+            dataType: "json"
+        }).done(function (dataResp) {
+            console.log(dataResp);
+            console.log(dsRequest.requestId);
+            var dsResponse = isc.ClassFactory.newInstance("DSResponse");
+            console.log(dsResponse);
+            dsResponse.data = dataResp;
+
+            var aux = {clientContext:null,context:null, status:0, startRow: 0, endRow: 1, totalRows: 1, data: dataResp};
+            console.log(aux);
+            DSTest1.processResponse(dsRequest.requestId, dsResponse);
+            console.log("paso el processResponse");
+        });
+   	},
+	fields: [
+		{name: "firstName", title: "First Name", type: "text", required: true, length: 50, primaryKey: true},
+	    {name: "lastName", title: "Last Name1", type: "text", length: 50},
+	    {name: "password", title: "Password", type: "password", required: true, length: 20}
+	],		
+	dataURL: "services/ess/servicePrueba"
+}

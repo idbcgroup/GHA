@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE schema [
+        <!ELEMENT schema (complexType|element)*>
+        <!ATTLIST schema
+                xmlns CDATA #REQUIRED
+                targetNamespace CDATA #REQUIRED
+                xmlns:tns CDATA #REQUIRED
+                elementFormDefault CDATA #REQUIRED>
+        <!ELEMENT complexType (sequence|complexContent)*>
+        <!ATTLIST complexType
+                abstract CDATA #IMPLIED
+                name CDATA #REQUIRED>
+        <!ELEMENT sequence (element)*>
+        <!ELEMENT element (#PCDATA)>
+        <!ATTLIST element
+                maxOccurs CDATA #IMPLIED
+                minOccurs CDATA #IMPLIED
+                name CDATA #REQUIRED
+                nillable CDATA #IMPLIED
+                type CDATA #REQUIRED>
+        <!ELEMENT complexContent (extension)*>
+        <!ELEMENT extension (sequence)*>
+        <!ATTLIST extension
+                base CDATA #REQUIRED>
+        ]>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/schema3"
+        xmlns:tns="http://www.example.org/schema3" elementFormDefault="qualified">
+
+
+    <complexType name="ghaResponse">
+        <sequence>
+            <element name="error" type="tns:errorInfo" maxOccurs="1"
+                     minOccurs="1">
+            </element>
+            <element name="valid" type="boolean" nillable="false"></element>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="errorInfo">
+        <sequence>
+            <element name="code" type="int" nillable="false"></element>
+            <element name="description" type="string"
+                     nillable="false">
+            </element>
+            <element name="message" type="string" nillable="false"></element>
+            <element name="stackTrace" type="string"></element>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="loginRequest">
+
+        <sequence>
+            <element name="login" type="string"></element>
+            <element name="password" type="string"></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="authResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="idOperation" type="int"></element>
+                    <element name="login" type="string"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+
+    <complexType name="catalogResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="catalog" type="tns:comboBoxElement" maxOccurs="unbounded" minOccurs="0"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+
+    <complexType name="loginResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="blocked" type="boolean"></element>
+                    <element name="invalidPassword" type="boolean"></element>
+                    <element name="accountInactivate" type="boolean"></element>
+                    <element name="userNotExists" type="boolean"></element>
+                    <element name="numAttemps" type="int"></element>
+                    <element name="bpiDefault" type="int"></element>
+                    <element name="bpuData" type="tns:bpuData"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <element name="loginRequest" type="tns:loginRequest"></element>
+
+    <element name="loginResponse" type="tns:loginResponse"></element>
+
+
+    <complexType name="comboBoxElement">
+        <sequence>
+            <element name="id" type="int"></element>
+            <element name="name" type="string"></element>
+        </sequence>
+    </complexType>
+
+
+    <element name="codeRequest" type="tns:codeRequest"></element>
+
+    <complexType name="formResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="jsonString" type="string"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+
+    <element name="formCompsResponse" type="tns:formResponse"></element>
+
+    <element name="formCompsRequest" type="string"></element>
+
+
+    <complexType name="singleSingOnUserResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="id" type="int"></element>
+                    <element name="password" type="string"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <element name="singleSingOnUserResponse"
+             type="tns:singleSingOnUserResponse">
+    </element>
+
+    <element name="locationsResponse" type="tns:locationsResponse"></element>
+
+    <complexType name="locationsResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="workingAreas"
+                             type="tns:comboBoxElement" minOccurs="0" maxOccurs="unbounded">
+                    </element>
+                    <element name="institutions" type="tns:comboBoxElement" minOccurs="0"
+                             maxOccurs="unbounded"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="codeRequest">
+        <sequence>
+            <element name="code" type="string"></element>
+        </sequence>
+    </complexType>
+
+    <element name="catalogResponse" type="tns:catalogResponse"></element>
+
+
+    <complexType name="dataGlobalRequest">
+        <sequence>
+            <element name="institutionId" type="int"></element>
+            <element name="workingAreaId" type="int"></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="dataGlobalResponse">
+    	<complexContent>
+    		<extension base="tns:ghaResponse">
+    			<sequence>
+    				<element name="infoPacks"
+    					type="tns:dataGlobalInfoPacks">
+    				</element>
+    				<element name="parameters"
+    					type="tns:dataGlobalParameters">
+    				</element>
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+
+    <complexType name="InfoPack">
+        <sequence>
+            <element name="isUnique" type="boolean"></element>
+            <element name="data" type="tns:infoPackData" minOccurs="1"
+                     maxOccurs="unbounded">
+            </element>
+        </sequence>
+    </complexType>
+
+    <complexType name="messageParameter">
+        <complexContent>
+            <extension base="tns:ghaParameter">
+                <sequence>
+                    <element name="param1" type="string"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="infoPackData" abstract="true"></complexType>
+
+
+    <complexType name="bpiPackData">
+        <complexContent>
+            <extension base="tns:infoPackData">
+                <sequence>
+                    <element name="code" type="string"></element>
+                    <element name="name" type="string"></element>
+                    <element name="instalationType" type="string"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="dataGlobalInfoPacks">
+    	<sequence>
+    		<element name="bpiPack" type="tns:InfoPack"></element>
+    		<element name="accessPack" type="tns:InfoPack"></element>
+    		<element name="terminalPack" type="tns:InfoPack"></element>
+    		<element name="peripherialPack" type="tns:InfoPack"></element>
+    		<element name="bpuPack" type="tns:bpuPack"></element>
+    		<element name="bpuAccessPack" type="tns:bpuAccessPack"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="dataGlobalParameters">
+        <sequence>
+            <element name="bpiParameter" type="tns:bpiParameter"></element>
+            <element name="operationParameter"
+                     type="tns:operationParameter">
+            </element>
+            <element name="messageParameter"
+                     type="tns:messageParameter">
+            </element>
+        </sequence>
+    </complexType>
+
+    <complexType name="ghaParameter" abstract="true"></complexType>
+
+    <complexType name="bpiParameter">
+        <complexContent>
+            <extension base="tns:ghaParameter">
+                <sequence>
+                    <element name="param1" type="string"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="bpuPack">
+    	<complexContent>
+    		<extension base="tns:infoPackData">
+    			<sequence>
+    				<element name="bpuPrimaryWaIo" type="tns:comboBoxElement"></element>
+    				<element name="bpuHoraryRestricted"
+    					type="boolean">
+    				</element>
+    				<element name="bpuWaRestricted" type="boolean"></element>
+    				<element name="bpuPkiRequired" type="string"></element>
+    				<element name="initialActionOnLogon"
+    					type="string">
+    				</element>
+    				<element name="initialForm" type="string"></element>
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <element name="dataGlobalRequest" type="tns:dataGlobalRequest"></element>
+
+    <element name="dataGlobalResponse" type="tns:dataGlobalResponse"></element>
+
+    <complexType name="operationParameter">
+    	<complexContent>
+    		<extension base="tns:ghaParameter">
+    			<sequence>
+    				<element name="param1" type="string"></element>
+    				<element name="pkiOn" type="int"></element>
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+
+    <complexType name="institutions">
+        <complexContent>
+            <extension base="tns:comboBoxElement">
+                <sequence>
+                    <element name="url" type="string"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+
+    <complexType name="bpuData">
+        <sequence>
+            <element name="institutions" type="tns:institutions" maxOccurs="unbounded" minOccurs="1"></element>
+            <element name="workingAreas" type="tns:comboBoxElement" maxOccurs="unbounded" minOccurs="1"></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="parameterResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="parameter" type="tns:ghaParameter"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <element name="parameterResponse" type="tns:parameterResponse"></element>
+
+    <complexType name="smnResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="alarms" type="tns:smnAlarm" maxOccurs="unbounded" minOccurs="0"></element>
+                    <element name="messages" type="tns:smnMessage"
+                             maxOccurs="unbounded" minOccurs="0">
+                    </element>
+                    <element name="notifications"
+                             type="tns:smnNotification" maxOccurs="unbounded"
+                             minOccurs="0">
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="smnAlarm">
+        <sequence>
+            <element name="description" type="string"></element>
+            <element name="level" type="string"></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="smnNotification">
+        <sequence>
+            <element name="description" type="string"></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="smnMessage">
+        <sequence>
+            <element name="message" type="string"></element>
+            <element name="title" type="string"></element>
+        </sequence>
+    </complexType>
+
+    <element name="smnResponse" type="string"></element>
+
+    <complexType name="logonLogResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse"></extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="logonLogRequest">
+        <sequence>
+            <element name="password" type="string"></element>
+            <element name="login" type="string"></element>
+            <element name="instOrigen" type="int"></element>
+            <element name="instDest" type="int"></element>
+        </sequence>
+    </complexType>
+
+    <element name="logonLogRequest" type="tns:logonLogRequest"></element>
+
+    <element name="logonLogResponse" type="tns:logonLogResponse"></element>
+
+
+    <complexType name="infoPackResponse">
+        <complexContent>
+            <extension base="tns:ghaResponse">
+                <sequence>
+                    <element name="infoPack" type="tns:InfoPack"></element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <element name="infoPackResponse" type="tns:infoPackResponse"></element>
+
+    <complexType name="bpuAccessPack">
+    	<complexContent>
+    		<extension base="tns:infoPackData">
+    			<sequence>
+    				<element name="bpuWaAllowed" type="tns:comboBoxElement" maxOccurs="unbounded" minOccurs="1"></element>
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+</schema>
